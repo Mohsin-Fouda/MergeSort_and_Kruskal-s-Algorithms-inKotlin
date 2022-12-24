@@ -1,5 +1,3 @@
-package com.mohsin.mergesort
-
 
 fun main(args: Array<String>)
 {
