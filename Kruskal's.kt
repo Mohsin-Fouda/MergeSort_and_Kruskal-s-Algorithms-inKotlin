@@ -2,7 +2,7 @@
 import java.util.*
 
 internal class Graph(
-    private var V: Int, // V-> no. of vertices & E->no.of edges
+    private var V: Int, // V-> numbers of vertices & E-> number of edges
     E: Int,
 ) {
     // edge of graph
