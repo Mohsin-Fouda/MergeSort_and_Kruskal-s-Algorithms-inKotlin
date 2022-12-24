@@ -5,21 +5,21 @@ internal class Graph(
     private var V: Int, // V-> no. of vertices & E->no.of edges
     E: Int,
 ) {
-    // A class to represent a graph edge
+    // edge of graph
     internal inner class Edge : Comparable<Edge?> {
         var src = 0
         var dest = 0
         var weight = 0
 
-        // Comparator function used for
-        // sorting edgesbased on their weight
+        
+        // sorting of edges by their weight
         override operator fun compareTo(other: Edge?): Int {
             return weight - (other as Edge).weight
         }
     }
 
-    // A class to represent a Subset for
-    // union-find
+    
+    // represent a Subset for union-find
     internal inner class Subset {
         var parent = 0
         var rank = 0
@@ -33,17 +33,14 @@ internal class Graph(
         for (i in 0 until E) edge[i] = Edge()
     }
 
-    // A utility function to find set of an
-    // element i (uses path compression technique)
+    // find set of anelement i
     private fun find(subsets: Array<Subset?>, i: Int): Int {
-        // find root and make root as parent of i
-        // (path compression)
+        // find root and make it parent of i
         if (subsets[i]!!.parent != i) subsets[i]!!.parent = find(subsets, subsets[i]!!.parent)
         return subsets[i]!!.parent
     }
 
-    // A function that does union of two sets
-    // of x and y (uses union by rank)
+	//union of two sets of x and y 
     private fun union(subsets: Array<Subset?>, x: Int, y: Int) {
         val xroot = find(subsets, x)
         val yroot = find(subsets, y)
@@ -57,46 +54,39 @@ internal class Graph(
         }
     }
 
-    // The main function to construct MST using Kruskal's
-    // algorithm
+    // construct MST using Kruskal's algorithm
+
     fun kruskalMST() {
-        // This will store the resultant MST
-        val result = arrayOfNulls<Edge>(V)
-
-        // An index variable, used for result[]
-        var e = 0
-
-        // An index variable, used for sorted edges
+        
+        val result = arrayOfNulls<Edge>(V)        
+        var e = 0        
         var i = 0
         while (i < V) {
             result[i] = Edge()
             ++i
         }
 
-        // Step 1: Sort all the edges in non-decreasing
-        // order of their weight. If we are not allowed to
-        // change the given graph, we can create a copy of
-        // array of edges
+        /* Step 1: Sort all the edges in non-decreasing
+         order of their weight. If we are not allowed to
+         change the given graph, we can create a copy of
+         array of edges*/
         Arrays.sort(edge)
-
-        // Allocate memory for creating V subsets
         val subsets = arrayOfNulls<Subset>(V)
         i = 0
         while (i < V) {
             subsets[i] = Subset()
             ++i
         }
-
-        // Create V subsets with single elements
+        
         for (v in 0 until V) {
             subsets[v]!!.parent = v
             subsets[v]!!.rank = 0
         }
-        i = 0 // Index used to pick next edge
+        i = 0 
 
         // Number of edges to be taken is equal to V-1
         while (e < V - 1) {
-            // Step 2: Pick the smallest edge. And increment
+        	// Step 2: Pick the smallest edge. And increment
             // the index for next iteration
             val nextedge = edge[i++]
             val x = find(subsets, nextedge!!.src)
@@ -112,8 +102,8 @@ internal class Graph(
             // Else discard the nextedge
         }
 
-        // print the contents of result[] to display
-        // the built MST
+        // print the contents of result[] to display MST
+ 
         println("Following are the edges in "
                 + "the constructed MST")
         var minimumCost = 0
@@ -125,12 +115,11 @@ internal class Graph(
             minimumCost += result[i]!!.weight
             ++i
         }
-        println("Minimum Cost Spanning Tree "
+        println("MST Cost "
                 + minimumCost)
     }
 
     companion object {
-        // Driver's Code
         @JvmStatic
         fun main(args: Array<String>) {
 
